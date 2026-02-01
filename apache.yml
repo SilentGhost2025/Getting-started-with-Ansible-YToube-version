@@ -1,0 +1,39 @@
+---
+- hosts: web
+  become: true
+  tasks:
+    - name: install apache
+      yum:
+        name: httpd
+        state: present
+
+    - name: start and enable apache
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: copy index file
+      copy:
+        src: index.html
+        dest: /var/www/html/
+
+- hosts: all
+  become: true
+  tasks:
+    - name: install vim
+      yum:
+        name: vim
+        state: present
+
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: check system resources
+      shell: df -h
+      register: disk_usage
+
+    - name: display disk usage
+      debug:
+        var: disk_usage.stdout_lines
