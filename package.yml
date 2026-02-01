@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Package Installation
+      package:
+        name: ["wget", "vim", "git", "tree", "zip"]
+        state: latest
+
+
+        

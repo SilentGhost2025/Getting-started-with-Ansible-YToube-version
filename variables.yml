@@ -1,0 +1,12 @@
+---
+- hosts: db
+  vars:
+    name: From Playbook
+    password: admin123
+  tasks:
+    - name: demo vars 
+      debug:
+        msg:"{{name}}"
+    - name: demo2 vars 
+      debug:
+        msg:"{{password}}"
