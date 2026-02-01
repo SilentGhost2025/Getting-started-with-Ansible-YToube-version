@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Salvation — DevOps Engineer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&display=swap');
+
+    :root {
+      --bg: #0a0e17;
+      --surface: #111827;
+      --surface-alt: #1a2234;
+      --accent: #00e5ff;
+      --accent-dim: rgba(0, 229, 255, 0.12);
+      --accent-glow: rgba(0, 229, 255, 0.35);
+      --text: #e2e8f0;
+      --text-dim: #64748b;
+      --green: #39ff14;
+      --orange: #ff9f43;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── Animated Grid Background ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Floating Glow Orbs ─── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+      width: 400px; height: 400px;
+      background: rgba(0, 229, 255, 0.08);
+      top: -100px; left: -100px;
+    }
+    .orb-2 {
+      width: 300px; height: 300px;
+      background: rgba(57, 255, 20, 0.06);
+      bottom: 10%; right: -80px;
+      animation-delay: 3s;
+    }
+    .orb-3 {
+      width: 250px; height: 250px;
+      background: rgba(255, 159, 67, 0.05);
+      top: 50%; left: 40%;
+      animation-delay: 5s;
+    }
+    @keyframes drift {
+      to { transform: translate(40px, 30px) scale(1.1); }
+    }
+
+    /* ─── Layout ─── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(0,229,255,0.1);
+    }
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--accent);
+    }
+    .logo span { color: var(--text-dim); }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-left: 28px;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 100px 0 80px;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 32px;
+      width: fit-content;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-dim);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #0a0e17;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 24px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(0,229,255,0.3);
+      color: var(--accent);
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-outline:hover {
+      background: var(--accent-dim);
+      transform: translateY(-2px);
+    }
+
+    /* ─── TERMINAL BLOCK ─── */
+    .terminal {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,255,0.15);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 60px 0;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      background: var(--surface-alt);
+      border-bottom: 1px solid rgba(0,229,255,0.1);
+    }
+    .terminal-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+    .terminal-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-left: 10px;
+    }
+    .terminal-body {
+      padding: 24px 24px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: var(--text);
+    }
+    .terminal-body .cmd { color: var(--accent); }
+    .terminal-body .dim { color: var(--text-dim); }
+    .terminal-body .success { color: var(--green); }
+    .terminal-body .warning { color: var(--orange); }
+    .cursor {
+      display: inline-block;
+      width: 9px; height: 16px;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1.1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ─── SECTION TITLES ─── */
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+    }
+
+    /* ─── SKILLS ─── */
+    .skills { padding: 40px 0 80px; }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,255,0.1);
+      border-radius: 12px;
+      padding: 28px 24px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .skill-card:hover {
+      border-color: rgba(0,229,255,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .skill-icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+    }
+    .skill-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .skill-card p {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      background: var(--accent-dim);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,229,255,0.15);
+    }
+
+    /* ─── EXPERIENCE ─── */
+    .experience { padding: 40px 0 80px; }
+    .exp-timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+    .exp-timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .exp-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: -27px; top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      border: 3px solid var(--bg);
+    }
+    .exp-date {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .exp-item h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .exp-company {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+    .exp-item p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    /* ─── PROJECTS ─── */
+    .projects { padding: 40px 0 80px; }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,255,0.1);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: start;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .project-card:hover {
+      border-color: rgba(0,229,255,0.35);
+      transform: translateX(4px);
+    }
+    .project-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .project-card p {
+      font-size: 0.84rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .project-status {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--green);
+      background: rgba(57,255,20,0.1);
+      border: 1px solid rgba(57,255,20,0.2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* ─── CONTACT ─── */
+    .contact {
+      padding: 60px 0 100px;
+      text-align: center;
+    }
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,255,0.15);
+      border-radius: 16px;
+      padding: 60px 40px;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-box::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, var(--accent-dim), transparent 70%);
+      pointer-events: none;
+    }
+    .contact-box h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .contact-box p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .contact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent);
+      text-decoration: none;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,255,0.2);
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .contact-links a:hover {
+      background: rgba(0,229,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      border-top: 1px solid rgba(0,229,255,0.08);
+    }
+    footer p {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Glow Orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="wrapper">
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Salvation<span>.</dev</span></div>
+    <div class="nav-links">
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Available for opportunities
+    </div>
+    <h1>Building resilient<br/><span class="highlight">infrastructure</span><br/>at scale.</h1>
+    <p>I'm Salvation — a DevOps Engineer passionate about automating deployments, architecting cloud infrastructure, and turning chaos into seamless CI/CD pipelines.</p>
+    <div class="hero-buttons">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- TERMINAL -->
+  <div class="terminal reveal">
+    <div class="terminal-bar">
+      <div class="terminal-dot dot-red"></div>
+      <div class="terminal-dot dot-yellow"></div>
+      <div class="terminal-dot dot-green"></div>
+      <span class="terminal-title">salvation@devops:~</span>
+    </div>
+    <div class="terminal-body">
+      <span class="dim">$</span> <span class="cmd">ansible-playbook</span> deploy.yml --check<br/>
+      <span class="success">✓ Gathering Facts ........... OK</span><br/>
+      <span class="success">✓ Pulling Latest Code ....... OK</span><br/>
+      <span class="success">✓ Building Docker Image ..... OK</span><br/>
+      <span class="success">✓ Running Migrations ........ OK</span><br/>
+      <span class="success">✓ Deploying to Production ... OK</span><br/>
+      <span class="success">✓ Health Check Passed ....... OK</span><br/><br/>
+      <span class="dim">$</span> <span class="cmd">terraform</span> apply --auto-approve<br/>
+      <span class="warning">⟳ Creating resources ........</span> <span class="success">3 added</span><br/><br/>
+      <span class="dim">$</span> <span class="cursor"></span>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <section class="skills" id="skills">
+    <div class="section-label reveal">// what I do</div>
+    <h2 class="section-title reveal">Skills &amp; Tools</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">☁️</div>
+        <h3>Cloud Infrastructure</h3>
+        <p>Designing and managing scalable cloud environments with high availability.</p>
+        <div class="skill-tags">
+          <span class="tag">AWS</span>
+          <span class="tag">EC2</span>
+          <span class="tag">VPC</span>
+          <span class="tag">IAM</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚙️</div>
+        <h3>Automation</h3>
+        <p>Automating repetitive tasks and deployments to save time and reduce errors.</p>
+        <div class="skill-tags">
+          <span class="tag">Ansible</span>
+          <span class="tag">Terraform</span>
+          <span class="tag">Shell</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🚀</div>
+        <h3>CI/CD Pipelines</h3>
+        <p>Building end-to-end pipelines that automate testing, builds, and deployments.</p>
+        <div class="skill-tags">
+          <span class="tag">Jenkins</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">GitLab</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📦</div>
+        <h3>Containerization</h3>
+        <p>Packaging and orchestrating applications using containers for consistency.</p>
+        <div class="skill-tags">
+          <span class="tag">Docker</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">ECS</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔒</div>
+        <h3>Security</h3>
+        <p>Implementing security best practices across infrastructure and pipelines.</p>
+        <div class="skill-tags">
+          <span class="tag">SSL/TLS</span>
+          <span class="tag">Vault</span>
+          <span class="tag">SIEM</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📊</div>
+        <h3>Monitoring</h3>
+        <p>Setting up observability stacks to track performance and uptime.</p>
+        <div class="skill-tags">
+          <span class="tag">Prometheus</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">ELK</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="experience" id="experience">
+    <div class="section-label reveal">// career</div>
+    <h2 class="section-title reveal">Experience</h2>
+    <div class="exp-timeline">
+      <div class="exp-item reveal">
+        <div class="exp-date">2023 — Present</div>
+        <h3>Senior DevOps Engineer</h3>
+        <div class="exp-company">Tech Company · Remote</div>
+        <p>Leading infrastructure automation with Ansible and Terraform. Architected CI/CD pipelines reducing deployment time by 70%. Managed Kubernetes clusters serving 2M+ daily users.</p>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-date">2021 — 2023</div>
+        <h3>DevOps Engineer</h3>
+        <div class="exp-company">Startup · Lagos, Nigeria</div>
+        <p>Built and maintained AWS infrastructure from scratch. Implemented Docker and ECS-based deployments. Designed monitoring dashboards using Grafana and Prometheus.</p>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-date">2019 — 2021</div>
+        <h3>Systems Administrator</h3>
+        <div class="exp-company">IT Solutions · Lagos, Nigeria</div>
+        <p>Managed on-premise Linux servers and transitioned key workloads to AWS cloud. Automated server provisioning and patching using shell scripts and Ansible.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects" id="projects">
+    <div class="section-label reveal">// portfolio</div>
+    <h2 class="section-title reveal">Projects</h2>
+    <div class="project-card reveal">
+      <div>
+        <h3>Automated Kubernetes Deployment Pipeline</h3>
+        <p>End-to-end CI/CD pipeline that builds, tests, containerizes, and deploys applications to a Kubernetes cluster with zero manual intervention. Includes canary releases and auto-rollback.</p>
+        <div class="skill-tags">
+          <span class="tag">Kubernetes</span>
+          <span class="tag">Jenkins</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Helm</span>
+        </div>
+      </div>
+      <span class="project-status">● Live</span>
+    </div>
+    <div class="project-card reveal">
+      <div>
+        <h3>Multi-Region AWS Infrastructure as Code</h3>
+        <p>Fully automated Terraform modules to provision VPCs, subnets, security groups, RDS, and ALBs across multiple AWS regions with state management and drift detection.</p>
+        <div class="skill-tags">
+          <span class="tag">Terraform</span>
+          <span class="tag">AWS</span>
+          <span class="tag">S3</span>
+          <span class="tag">DynamoDB</span>
+        </div>
+      </div>
+      <span class="project-status">● Live</span>
+    </div>
+    <div class="project-card reveal">
+      <div>
+        <h3>Ansible Server Hardening Playbook</h3>
+        <p>A collection of Ansible roles that automate Linux server hardening, user management, firewall configuration, and compliance checks across all environments.</p>
+        <div class="skill-tags">
+          <span class="tag">Ansible</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Security</span>
+          <span class="tag">YAML</span>
+        </div>
+      </div>
+      <span class="project-status">● Live</span>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-box reveal">
+      <div class="section-label" style="text-align:center;">// let's connect</div>
+      <h2>Get in Touch</h2>
+      <p>Open to new roles, freelance projects, or just a chat about DevOps.</p>
+      <div class="contact-links">
+        <a href="#">✉ Email</a>
+        <a href="#">💼 LinkedIn</a>
+        <a href="#">🐙 GitHub</a>
+        <a href="#">📄 Resume</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Salvation · Designed &amp; Built with precision · All rights reserved</p>
+  </footer>
+
+</div>
+
+<!-- Scroll Reveal Script -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
